@@ -35205,10 +35205,31 @@ bool X86TargetLowering::isFMAFasterThanFMulAndFAdd(const MachineFunction &MF,
 
 bool X86TargetLowering::isNarrowingProfitable(SDNode *N, EVT SrcVT,
                                               EVT DestVT) const {
-  // i16 instructions are longer (0x66 prefix) and potentially slower.
   if (!(SrcVT.isScalarInteger() && DestVT.isScalarInteger()))
     return false;
-  return !(SrcVT == MVT::i32 && DestVT == MVT::i16);
+
+  // i16 instructions are longer (0x66 prefix) and potentially slower.
+  if (SrcVT == MVT::i32 && DestVT == MVT::i16)
+    return false;
+
+  // [WA] just disable any narrowing to i8
+  // if (SrcVT == MVT::i32 && DestVT == MVT::i8)
+  //   return false;
+
+  // avoid narroing 32bit->8bit if it used by select. Typically it chould be
+  // mapped to CMOV instruction which doen't support 8bit registers. Exponsion
+  // to 32 bits is possible.
+  if (SrcVT == MVT::i32 && (DestVT == MVT::i16 || DestVT == MVT::i8)) {
+    if (llvm::any_of(N->uses(), [&](SDNode *Use) {
+          return Use->getOpcode() == ISD::TRUNCATE && 
+              llvm::any_of(Use->uses(), [&](SDNode *UUse) {
+            return UUse->getOpcode() == ISD::SELECT;
+          });
+        }))
+      return false;
+  }
+
+  return true;
 }
 
 bool X86TargetLowering::shouldFoldSelectWithIdentityConstant(unsigned Opcode,
