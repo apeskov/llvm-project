@@ -95,12 +95,12 @@ Entry:
 define i8 @test_i8(i8 %w, i8 %x, i8 %y, i8 %z) {
 ; CHECK-LABEL: test_i8:
 ; CHECK:       # %bb.0: # %Entry
-; CHECK-NEXT:    movl %ecx, %eax
-; CHECK-NEXT:    andb %dl, %sil
+; CHECK-NEXT:    movl %edx, %eax
+; CHECK-NEXT:    andl %edx, %esi
 ; CHECK-NEXT:    notb %sil
 ; CHECK-NEXT:    andb %dil, %sil
-; CHECK-NEXT:    notb %al
-; CHECK-NEXT:    orb %dl, %al
+; CHECK-NEXT:    notb %cl
+; CHECK-NEXT:    orb %cl, %al
 ; CHECK-NEXT:    andb %sil, %al
 ; CHECK-NEXT:    # kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
