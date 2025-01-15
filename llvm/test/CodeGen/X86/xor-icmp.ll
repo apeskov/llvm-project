@@ -15,9 +15,12 @@ define i32 @t(i32 %a, i32 %b) nounwind ssp {
 ;
 ; X64-LABEL: t:
 ; X64:       # %bb.0: # %entry
-; X64-NEXT:    xorl %esi, %edi
+; X64-NEXT:    shrl $14, %edi
+; X64-NEXT:    andl $1, %edi
+; X64-NEXT:    shrl $14, %esi
+; X64-NEXT:    andl $1, %esi
 ; X64-NEXT:    xorl %eax, %eax
-; X64-NEXT:    testl $16384, %edi # imm = 0x4000
+; X64-NEXT:    cmpb %sil, %dil
 ; X64-NEXT:    jne bar # TAILCALL
 ; X64-NEXT:  # %bb.1: # %bb
 ; X64-NEXT:    jmp foo # TAILCALL
@@ -96,7 +99,7 @@ define i1 @xor_not_bools(i1 zeroext %x, i1 zeroext %y) nounwind {
 ; X64-LABEL: xor_not_bools:
 ; X64:       # %bb.0:
 ; X64-NEXT:    movl %edi, %eax
-; X64-NEXT:    xorl %esi, %eax
+; X64-NEXT:    xorb %sil, %al
 ; X64-NEXT:    xorb $1, %al
 ; X64-NEXT:    # kill: def $al killed $al killed $eax
 ; X64-NEXT:    retq

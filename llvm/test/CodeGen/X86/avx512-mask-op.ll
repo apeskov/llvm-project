@@ -3936,7 +3936,7 @@ define i8 @test_v8i1_add(i8 %x, i8 %y) {
 ; CHECK-LABEL: test_v8i1_add:
 ; CHECK:       ## %bb.0:
 ; CHECK-NEXT:    movl %edi, %eax
-; CHECK-NEXT:    xorl %esi, %eax
+; CHECK-NEXT:    xorb %sil, %al
 ; CHECK-NEXT:    ## kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
 ;
@@ -3956,7 +3956,7 @@ define i8 @test_v8i1_sub(i8 %x, i8 %y) {
 ; CHECK-LABEL: test_v8i1_sub:
 ; CHECK:       ## %bb.0:
 ; CHECK-NEXT:    movl %edi, %eax
-; CHECK-NEXT:    xorl %esi, %eax
+; CHECK-NEXT:    xorb %sil, %al
 ; CHECK-NEXT:    ## kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
 ;
@@ -3976,7 +3976,7 @@ define i8 @test_v8i1_mul(i8 %x, i8 %y) {
 ; CHECK-LABEL: test_v8i1_mul:
 ; CHECK:       ## %bb.0:
 ; CHECK-NEXT:    movl %edi, %eax
-; CHECK-NEXT:    andl %esi, %eax
+; CHECK-NEXT:    andb %sil, %al
 ; CHECK-NEXT:    ## kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
 ;
@@ -5128,7 +5128,7 @@ define i1 @test_v1i1_add(i1 %x, i1 %y) {
 ; CHECK-LABEL: test_v1i1_add:
 ; CHECK:       ## %bb.0:
 ; CHECK-NEXT:    movl %edi, %eax
-; CHECK-NEXT:    xorl %esi, %eax
+; CHECK-NEXT:    xorb %sil, %al
 ; CHECK-NEXT:    ## kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
 ;
@@ -5148,7 +5148,7 @@ define i1 @test_v1i1_sub(i1 %x, i1 %y) {
 ; CHECK-LABEL: test_v1i1_sub:
 ; CHECK:       ## %bb.0:
 ; CHECK-NEXT:    movl %edi, %eax
-; CHECK-NEXT:    xorl %esi, %eax
+; CHECK-NEXT:    xorb %sil, %al
 ; CHECK-NEXT:    ## kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
 ;
@@ -5168,7 +5168,7 @@ define i1 @test_v1i1_mul(i1 %x, i1 %y) {
 ; CHECK-LABEL: test_v1i1_mul:
 ; CHECK:       ## %bb.0:
 ; CHECK-NEXT:    movl %edi, %eax
-; CHECK-NEXT:    andl %esi, %eax
+; CHECK-NEXT:    andb %sil, %al
 ; CHECK-NEXT:    ## kill: def $al killed $al killed $eax
 ; CHECK-NEXT:    retq
 ;
