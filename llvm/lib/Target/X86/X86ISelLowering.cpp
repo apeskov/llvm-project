@@ -35219,10 +35219,10 @@ bool X86TargetLowering::isNarrowingProfitable(SDNode *N, EVT SrcVT,
   // avoid narroing 32bit->8bit if it used by select. Typically it chould be
   // mapped to CMOV instruction which doen't support 8bit registers. Exponsion
   // to 32 bits is possible.
-  if (SrcVT == MVT::i32 && (DestVT == MVT::i16 || DestVT == MVT::i8)) {
-    if (llvm::any_of(N->uses(), [&](SDNode *Use) {
+  if (DestVT == MVT::i16 || DestVT == MVT::i8) {
+    if (llvm::any_of(N->users(), [&](SDNode *Use) {
           return Use->getOpcode() == ISD::TRUNCATE && 
-              llvm::any_of(Use->uses(), [&](SDNode *UUse) {
+              llvm::any_of(Use->users(), [&](SDNode *UUse) {
             return UUse->getOpcode() == ISD::SELECT;
           });
         }))
