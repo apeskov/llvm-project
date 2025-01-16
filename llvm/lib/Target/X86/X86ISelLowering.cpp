@@ -35212,22 +35212,25 @@ bool X86TargetLowering::isNarrowingProfitable(SDNode *N, EVT SrcVT,
   if (SrcVT == MVT::i32 && DestVT == MVT::i16)
     return false;
 
-  // [WA] just disable any narrowing to i8
-  // if (SrcVT == MVT::i32 && DestVT == MVT::i8)
-  //   return false;
+  // Just disable truncate propagation.
+  if (DestVT == MVT::i8 || DestVT == MVT::i16) {
+    if (N->hasOneUse() && N->users().begin()->getOpcode() == ISD::TRUNCATE) {
+      return false;
+    }
+  }
 
   // avoid narroing 32bit->8bit if it used by select. Typically it chould be
   // mapped to CMOV instruction which doen't support 8bit registers. Exponsion
   // to 32 bits is possible.
-  if (DestVT == MVT::i16 || DestVT == MVT::i8) {
-    if (llvm::any_of(N->users(), [&](SDNode *Use) {
-          return Use->getOpcode() == ISD::TRUNCATE && 
-              llvm::any_of(Use->users(), [&](SDNode *UUse) {
-            return UUse->getOpcode() == ISD::SELECT;
-          });
-        }))
-      return false;
-  }
+  // if (DestVT == MVT::i16 || DestVT == MVT::i8) {
+  //   if (llvm::any_of(N->users(), [&](SDNode *Use) {
+  //         return Use->getOpcode() == ISD::TRUNCATE &&
+  //             llvm::any_of(Use->users(), [&](SDNode *UUse) {
+  //           return UUse->getOpcode() == ISD::SELECT;
+  //         });
+  //       }))
+  //     return false;
+  // }
 
   return true;
 }
